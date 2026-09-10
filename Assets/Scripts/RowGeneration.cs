@@ -24,7 +24,7 @@ public class RowGeneration : MonoBehaviour
 
         amountOfSquares = int.Parse(amount);
 
-        Debug.Log(amountOfSquares);
+        //Debug.Log(amountOfSquares);
 
         for (int i = 0; i < squares.Count; i++)
         {
