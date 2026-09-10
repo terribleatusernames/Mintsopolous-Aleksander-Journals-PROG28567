@@ -41,7 +41,7 @@ public class Pipeline : MonoBehaviour
             }
         }
       
-        if (Mouse.current.leftButton.wasReleasedThisFrame)
+        if (Mouse.current.rightButton.wasReleasedThisFrame)
         {
 
             Debug.Log(magnitude);
