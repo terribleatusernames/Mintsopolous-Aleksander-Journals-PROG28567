@@ -2,10 +2,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
+using Unity.VisualScripting;
 public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
     public GameObject bombPrefab;
+    public GameObject enemyShip;    
     public List<Transform> asteroidTransforms;
 
     public Vector3 result;
@@ -13,6 +15,12 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 enemy = NormalizeVector(enemyShip.transform.up);
+        Vector2 ship = NormalizeVector(transform.up);
+
+        Debug.Log(Vector2.Dot(enemy, ship));
+
+
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
             result = AddNumbers(Vector3.up, Vector3.up );
@@ -32,6 +40,17 @@ public class Player : MonoBehaviour
         SpawnBombAtOffset(result);
     }
 
+
+    Vector2 NormalizeVector (Vector2 vector)
+    {
+        float magnitude = vector.magnitude;
+        
+        Vector2 outVector = new Vector2(vector.x / magnitude, vector.y / magnitude);
+
+        return outVector;
+
+
+    }
 
     Vector3 AddNumbers(Vector3 one, Vector3 two)
     {
