@@ -12,9 +12,25 @@ public class Player : MonoBehaviour
 
     public Vector3 result;
 
+    public float bombTrailSpacing = 3;
+    public int numberOfTrailBombs = 5;
+    public List<GameObject> Bombs = new List<GameObject>();
+
     // Update is called once per frame
     void Update()
     {
+
+
+        if(Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
+        }
+
+
+
+
+        //TASK A
+
         Vector2 enemy = NormalizeVector(enemyShip.transform.up);
         Vector2 ship = NormalizeVector(transform.up);
 
@@ -23,6 +39,8 @@ public class Player : MonoBehaviour
 
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
+            Debug.Log("Spawning bomb");
+
             result = AddNumbers(Vector3.up, Vector3.up );
 
             StartCoroutine(spawnWithDelay(3f));
@@ -33,6 +51,28 @@ public class Player : MonoBehaviour
 
     }
 
+
+    public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
+    {
+        for (int i = 0; i < inNumberOfBombs; i++)
+        {
+            Vector3 offset = new Vector3(0, i * inBombSpacing, 0);
+            SpawnBombAtOffset(offset);
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // TASK A
     private IEnumerator spawnWithDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
@@ -59,6 +99,7 @@ public class Player : MonoBehaviour
 
     void SpawnBombAtOffset(Vector3 inOffset)
     {
+        
         Instantiate(bombPrefab, transform.position + inOffset, Quaternion.identity);
     }
 }
