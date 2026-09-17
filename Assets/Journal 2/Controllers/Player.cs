@@ -19,27 +19,17 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-
-        if(Keyboard.current.tKey.wasPressedThisFrame)
-        {
-            SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
-        }
-
-
-
-
-        //TASK A
+        //TASK 1A
 
         Vector2 enemy = NormalizeVector(enemyShip.transform.up);
         Vector2 ship = NormalizeVector(transform.up);
 
-        Debug.Log(Vector2.Dot(enemy, ship));
+        //Debug.Log(Vector2.Dot(enemy, ship));
 
 
         if (Keyboard.current.bKey.wasPressedThisFrame)
         {
-            Debug.Log("Spawning bomb");
+            //Debug.Log("Spawning bomb");
 
             result = AddNumbers(Vector3.up, Vector3.up );
 
@@ -47,24 +37,97 @@ public class Player : MonoBehaviour
 
         }
 
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
+
+        //TASK 1B
+        if (Keyboard.current.tKey.wasPressedThisFrame)
+        {
+            SpawnBombTrail(bombTrailSpacing, numberOfTrailBombs);
+        }
+
+
+
+
+        //TASK 2
+
+        if (Keyboard.current.mKey.wasPressedThisFrame)
+        {
+
+            SpawnBombOnRandomCorner(5f);
+
+        }
+
+
+        //TASK 3
+
 
     }
 
 
+    //TASK 3
+
+
+
+
+
+
+
+
+    //TASK 2
+
+    void SpawnBombOnRandomCorner(float inDistance)
+    {
+        Vector2 Corner = new Vector2();
+
+        if (Random.Range((int)0, 4) == 0)
+        {
+            Corner = NormalizeVector(Vector2.up + Vector2.right);
+         
+        } else if (Random.Range((int)1, 4) == 1)
+        {
+            Corner = NormalizeVector(Vector2.up + Vector2.left);
+        }
+        else if (Random.Range((int)1, 4) == 2)
+        {
+            Corner = NormalizeVector(Vector2.down + Vector2.right);
+        }
+        else if (Random.Range((int)1, 4) <= 3)
+        {
+            Corner = NormalizeVector(Vector2.down + Vector2.left);
+        }
+
+        Corner = Corner * inDistance;
+
+        Instantiate(bombPrefab, transform.position + new Vector3(Corner.x, Corner.y, 0), Quaternion.identity);
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+    //TASK 1B
     public void SpawnBombTrail(float inBombSpacing, int inNumberOfBombs)
     {
         for (int i = 0; i < inNumberOfBombs; i++)
         {
-            Vector3 offset = new Vector3(0, i * inBombSpacing, 0);
-            SpawnBombAtOffset(offset);
+            float offset = i * inBombSpacing;
+
+            Instantiate(bombPrefab, transform.position + new Vector3(0, 1 + offset, 0), Quaternion.identity);
         }
 
     }
 
 
 
-
+    
 
 
 
