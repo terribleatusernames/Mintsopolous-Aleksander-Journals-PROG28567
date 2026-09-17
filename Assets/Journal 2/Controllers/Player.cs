@@ -67,8 +67,36 @@ public class Player : MonoBehaviour
         }
 
 
+        //TASK 4 
+
+
+        if(Keyboard.current.rKey.isPressed)
+        {
+            DetectAsteroids(100f, asteroidTransforms);
+        }
+
+
     }
 
+
+    //TASK 4
+    public void DetectAsteroids(float inMaxRange, List<Transform> inAsteroids)
+    {
+        for(int i = 0; i < inAsteroids.Count; i++) {
+
+            Vector2 asteroidDistance = inAsteroids[i].position - transform.position;
+
+            Vector2 asteroidDirection = asteroidDistance.normalized;
+
+            float distanceFromShip = asteroidDistance.magnitude;
+
+            if (distanceFromShip <= inMaxRange)
+            {
+                Debug.DrawLine(transform.position, new Vector2(transform.position.x + (asteroidDirection.x * 2.5f), transform.position.y + (asteroidDirection.y * 2.5f)), Color.green);
+            }
+
+        }
+    }
 
     //TASK 3
 
