@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem.Utilities;
 public class Player : MonoBehaviour
 {
     public Transform enemyTransform;
@@ -60,6 +61,11 @@ public class Player : MonoBehaviour
 
         //TASK 3
 
+        if (Keyboard.current.lKey.wasPressedThisFrame)
+        {
+            WarpPlayer(enemyTransform, 0.5f);
+        }
+
 
     }
 
@@ -67,7 +73,20 @@ public class Player : MonoBehaviour
     //TASK 3
 
 
+    public void WarpPlayer(Transform target, float ratio)
+    {
+        Vector2 distance = target.position - transform.position;
 
+        Vector2 direction = distance.normalized;
+
+        float magnitude = distance.magnitude;
+
+        Vector2 warp = transform.position;
+
+        warp = warp + (direction * Mathf.Lerp(0, magnitude, ratio));
+
+        transform.position = warp;
+    }
 
 
 
