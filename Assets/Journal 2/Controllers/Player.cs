@@ -17,6 +17,11 @@ public class Player : MonoBehaviour
     public int numberOfTrailBombs = 5;
     public List<GameObject> Bombs = new List<GameObject>();
 
+    public float playerSpeed = 0f;
+    public float maxSpeed = 5f;
+    public float accelerationTime = 3f;
+
+
     // Update is called once per frame
     void Update()
     {
@@ -75,8 +80,42 @@ public class Player : MonoBehaviour
             DetectAsteroids(100f, asteroidTransforms);
         }
 
+        Vector3 moveInput = Vector3.zero;
+        if (Keyboard.current.rightArrowKey.isPressed) moveInput += Vector3.right;
+        if (Keyboard.current.leftArrowKey.isPressed) moveInput += Vector3.left;
+        if (Keyboard.current.upArrowKey.isPressed) moveInput += Vector3.up;
+        if (Keyboard.current.downArrowKey.isPressed) moveInput += Vector3.down;
+        PlayerMovement(moveInput);
+
 
     }
+
+
+
+
+    void PlayerMovement(Vector3 Direction)
+    {
+        Vector3 Velocity = Vector3.Normalize(Direction);
+
+        Vector3 playerPosition;
+
+        if (Direction != Vector3.zero)
+        {
+
+            playerPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+            playerPosition = new Vector3(Mathf.Clamp(playerPosition.x, 0, Screen.width), Mathf.Clamp(playerPosition.y, 0, Screen.height), playerPosition.z);
+
+            playerSpeed = Mathf.Clamp((playerSpeed += (maxSpeed / accelerationTime) * Time.deltaTime), 0, maxSpeed);
+
+            Debug.Log(playerSpeed);
+        
+        }
+
+        transform.position = Camera.main.ScreenToWorldPoint(playerPosition) + (Velocity * playerSpeed * Time.deltaTime);
+
+    }
+
 
 
     //TASK 4
