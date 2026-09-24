@@ -20,7 +20,21 @@ public class Player : MonoBehaviour
     public float playerSpeed = 0f;
     public float maxSpeed = 5f;
     public float accelerationTime = 3f;
+    public float currentAccelerationTime = 0f;
 
+    public float currentDecelerationTime = 0f;
+    public float decelerationTime = 3f;
+
+
+    public Vector3 playerPosition;
+    public Vector3 currentVelocity;
+
+    void Start()
+    {
+        currentAccelerationTime = maxSpeed / accelerationTime;
+
+        currentDecelerationTime = maxSpeed / decelerationTime; 
+    }
 
     // Update is called once per frame
     void Update()
@@ -37,7 +51,7 @@ public class Player : MonoBehaviour
         {
             //Debug.Log("Spawning bomb");
 
-            result = AddNumbers(Vector3.up, Vector3.up );
+            result = AddNumbers(Vector3.up, Vector3.up);
 
             StartCoroutine(spawnWithDelay(3f));
 
@@ -75,46 +89,69 @@ public class Player : MonoBehaviour
         //TASK 4 
 
 
-        if(Keyboard.current.rKey.isPressed)
+        if (Keyboard.current.rKey.isPressed)
         {
             DetectAsteroids(100f, asteroidTransforms);
         }
 
-        Vector3 moveInput = Vector3.zero;
-        if (Keyboard.current.rightArrowKey.isPressed) moveInput += Vector3.right;
-        if (Keyboard.current.leftArrowKey.isPressed) moveInput += Vector3.left;
-        if (Keyboard.current.upArrowKey.isPressed) moveInput += Vector3.up;
-        if (Keyboard.current.downArrowKey.isPressed) moveInput += Vector3.down;
-        PlayerMovement(moveInput);
-
-
-    }
 
 
 
+        Vector3 accelerationDirection = Vector3.zero;
 
-    void PlayerMovement(Vector3 Direction)
-    {
-        Vector3 Velocity = Vector3.Normalize(Direction);
-
-        Vector3 playerPosition;
-
-        if (Direction != Vector3.zero)
+        if (Keyboard.current.rightArrowKey.isPressed)
         {
-
-            playerPosition = Camera.main.WorldToScreenPoint(transform.position);
-
-            playerPosition = new Vector3(Mathf.Clamp(playerPosition.x, 0, Screen.width), Mathf.Clamp(playerPosition.y, 0, Screen.height), playerPosition.z);
-
-            playerSpeed = Mathf.Clamp((playerSpeed += (maxSpeed / accelerationTime) * Time.deltaTime), 0, maxSpeed);
-
-            Debug.Log(playerSpeed);
-        
+            accelerationDirection += Vector3.right;
         }
 
-        transform.position = Camera.main.ScreenToWorldPoint(playerPosition) + (Velocity * playerSpeed * Time.deltaTime);
+        if (Keyboard.current.leftArrowKey.isPressed)
+        {
+            accelerationDirection += Vector3.left;
+        }
+
+        
+        if (Keyboard.current.upArrowKey.isPressed)
+        {
+            accelerationDirection += Vector3.up;
+        }
+
+        if (Keyboard.current.downArrowKey.isPressed)
+        {
+            accelerationDirection += Vector3.down;
+        }
+
+        currentVelocity += accelerationDirection.normalized * currentAccelerationTime * Time.deltaTime;
+
+        if(currentVelocity.magnitude > maxSpeed)
+        {
+            currentVelocity = currentVelocity.normalized * maxSpeed;
+        }
+
+        if(currentVelocity.magnitude > 0 && accelerationDirection == Vector3.zero)
+        {
+            currentVelocity -= currentVelocity.normalized * currentDecelerationTime * Time.deltaTime;
+            if (currentVelocity.magnitude < 0.1f)
+            {
+                currentVelocity = Vector3.zero;
+            }
+        }
+            
+        playerPosition = Camera.main.WorldToScreenPoint(transform.position);
+
+        playerPosition = new Vector3(Mathf.Clamp(playerPosition.x, 0, Screen.width), Mathf.Clamp(playerPosition.y, 0, Screen.height), playerPosition.z);
+
+
+        transform.position = Camera.main.ScreenToWorldPoint(playerPosition) + currentVelocity * Time.deltaTime; 
+
+       
+
 
     }
+
+     
+
+
+    
 
 
 
