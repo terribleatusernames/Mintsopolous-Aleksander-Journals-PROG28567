@@ -6,9 +6,9 @@ using Unity.VisualScripting;
 using UnityEngine.InputSystem.Utilities;
 public class Player : MonoBehaviour
 {
-    public Transform enemyTransform;
+    //public Transform enemyTransform;
     public GameObject bombPrefab;
-    public GameObject enemyShip;    
+    //public GameObject enemyShip;    
     public List<Transform> asteroidTransforms;
 
     public Vector3 result;
@@ -41,7 +41,7 @@ public class Player : MonoBehaviour
     {
         //TASK 1A
 
-        Vector2 enemy = NormalizeVector(enemyShip.transform.up);
+        //Vector2 enemy = NormalizeVector(enemyShip.transform.up);
         Vector2 ship = NormalizeVector(transform.up);
 
         //Debug.Log(Vector2.Dot(enemy, ship));
@@ -80,10 +80,10 @@ public class Player : MonoBehaviour
 
         //TASK 3
 
-        if (Keyboard.current.lKey.wasPressedThisFrame)
-        {
-            WarpPlayer(enemyTransform, 0.5f);
-        }
+        //if (Keyboard.current.lKey.wasPressedThisFrame)
+        //{
+        //    WarpPlayer(enemyTransform, 0.5f);
+        //}
 
 
         //TASK 4 
@@ -177,20 +177,20 @@ public class Player : MonoBehaviour
     //TASK 3
 
 
-    public void WarpPlayer(Transform target, float ratio)
-    {
-        Vector2 distance = target.position - transform.position;
+    //public void WarpPlayer(Transform target, float ratio)
+    //{
+    //    Vector2 distance = target.position - transform.position;
 
-        Vector2 direction = distance.normalized;
+    //    Vector2 direction = distance.normalized;
 
-        float magnitude = distance.magnitude;
+    //    float magnitude = distance.magnitude;
 
-        Vector2 warp = transform.position;
+    //    Vector2 warp = transform.position;
 
-        warp = warp + (direction * Mathf.Lerp(0, magnitude, ratio));
+    //    warp = warp + (direction * Mathf.Lerp(0, magnitude, ratio));
 
-        transform.position = warp;
-    }
+    //    transform.position = warp;
+    //}
 
 
 
