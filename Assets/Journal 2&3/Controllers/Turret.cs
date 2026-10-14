@@ -35,6 +35,7 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        spawnTime += Time.deltaTime;
 
         FindClosestTarget();
 
@@ -165,7 +166,7 @@ public class Turret : MonoBehaviour
                 }
             }
 
-            spawnTime += Time.deltaTime;
+        
 
             if (spawnTime >= spawnInterval)
             {

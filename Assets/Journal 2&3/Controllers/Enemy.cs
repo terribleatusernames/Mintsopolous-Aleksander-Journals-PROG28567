@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour
         
         transform.position += currentVelocity;
 
-        if (currentHealth == 0) {
+        if (currentHealth <= 0) {
             Destroy(gameObject);
         }
 
