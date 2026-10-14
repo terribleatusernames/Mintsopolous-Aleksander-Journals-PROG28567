@@ -15,7 +15,7 @@ public class Turret : MonoBehaviour
     private bool isEnemyInRange = false;
 
     public float detectionRange;
-    public float shortestDistance;
+    float shortestDistance;
     public Vector3 upRelativeToParent;
     public Vector3 target;
 
@@ -70,15 +70,12 @@ public class Turret : MonoBehaviour
         void FindClosestTarget()
         {
             shortestDistance = 9999f;
+          
+            Vector3 defaultFace = transform.parent.position + transform.parent.up;
 
-            if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count == 0)
-            {
-                Vector3 defaultFace = transform.parent.position + transform.parent.up;
-
-                target = defaultFace;
-            }
-            else
-            {
+            target = defaultFace;
+            
+           
 
                 for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
                 {
@@ -98,23 +95,12 @@ public class Turret : MonoBehaviour
 
                             shortestDistance = distance;
 
-                            return;
-
                         }
-
-                    }
-                    else
-                    {
-                        Vector3 defaultFace = transform.parent.position + transform.parent.up;
-
-                        target = defaultFace;
-
-                       
 
                     }
 
                 }
-            }
+           
         }
 
         void drawRadius()

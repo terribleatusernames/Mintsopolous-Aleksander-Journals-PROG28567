@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     public float currentDecelerationTime = 0f;
     public float decelerationTime = 3f;
 
+    public float rotationSpeed;
 
     public Vector3 playerPosition;
     public Vector3 currentVelocity;
@@ -99,25 +100,25 @@ public class Player : MonoBehaviour
 
         Vector3 accelerationDirection = Vector3.zero;
 
-        if (Keyboard.current.rightArrowKey.isPressed)
-        {
-            accelerationDirection += Vector3.right;
-        }
-
-        if (Keyboard.current.leftArrowKey.isPressed)
-        {
-            accelerationDirection += Vector3.left;
-        }
-
-        
         if (Keyboard.current.upArrowKey.isPressed)
         {
-            accelerationDirection += Vector3.up;
+            accelerationDirection += transform.up;
         }
 
         if (Keyboard.current.downArrowKey.isPressed)
         {
-            accelerationDirection += Vector3.down;
+            accelerationDirection += -transform.up;
+        }
+
+        if(Keyboard.current.leftArrowKey.isPressed)
+        {
+            transform.Rotate(0, 0, rotationSpeed * Time.deltaTime);
+
+        }
+
+        if(Keyboard.current.rightArrowKey.isPressed)
+        {
+            transform.Rotate(0, 0, -rotationSpeed * Time.deltaTime);
         }
 
         currentVelocity += accelerationDirection.normalized * currentAccelerationTime * Time.deltaTime;
