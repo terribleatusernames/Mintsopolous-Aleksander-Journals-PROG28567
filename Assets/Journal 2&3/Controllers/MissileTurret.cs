@@ -45,6 +45,7 @@ public class MissileTurret : MonoBehaviour
 
                 for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
                 {
+                    if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
                     Vector3 enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform.position;
 
                     float distance = Vector3.Magnitude(enemyPosition - transform.position);
@@ -88,6 +89,7 @@ public class MissileTurret : MonoBehaviour
 
             for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
             {
+                if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
                 Transform enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform;
 
                 float distance = Vector3.Magnitude(enemyPosition.position - transform.position);

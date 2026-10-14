@@ -48,6 +48,8 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   maxSpeed: 5
   accelerationTime: 3
+  currentHealth: 4
+  hitboxRadius: 0.5
   currentVelocity: {x: 0, y: 0, z: 0}
 --- !u!1 &1957684609019034
 GameObject:

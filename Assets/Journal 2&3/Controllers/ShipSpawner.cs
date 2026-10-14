@@ -23,7 +23,15 @@ public class ShipSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-     
+
+        for (int i = spawnedEnemies.Count - 1; i >= 0; i--)
+        {
+            if (spawnedEnemies[i] == null)
+            {
+                spawnedEnemies.RemoveAt(i);
+            }
+        }
+
         spawnTime += Time.deltaTime;
     
         if (spawnTime >= spawnInterval)

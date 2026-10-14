@@ -35,6 +35,7 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         FindClosestTarget();
 
         drawRadius();
@@ -91,6 +92,7 @@ public class Turret : MonoBehaviour
 
                 for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
                 {
+                if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
                     Vector3 enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform.position;
 
                     float distance = Vector3.Magnitude(enemyPosition - transform.position);
@@ -140,6 +142,7 @@ public class Turret : MonoBehaviour
 
             for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
             {
+                if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
                 Transform enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform;
 
                 float distance = Vector3.Magnitude(enemyPosition.position - transform.position);
@@ -168,6 +171,9 @@ public class Turret : MonoBehaviour
             {
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
                 bullets.Add(bullet);
+
+                bullet.GetComponent<Bullet>().enemyShips = enemyShips;
+
                 spawnTime = 0f;
             }
         }
