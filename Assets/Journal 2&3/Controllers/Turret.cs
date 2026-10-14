@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Unity.AppUI.UI;
 using Unity.VisualScripting;
@@ -6,6 +7,12 @@ using static UnityEditor.ShaderGraph.Internal.KeywordDependentCollection;
 
 public class Turret : MonoBehaviour
 {
+
+    public float spawnInterval;
+
+    float spawnTime;
+    public GameObject bulletPrefab;
+    public List<GameObject> bullets = new List<GameObject>();
     public float angularSpeed;
 
     public GameObject enemyShips;
@@ -30,7 +37,12 @@ public class Turret : MonoBehaviour
     {
         FindClosestTarget();
 
-        drawRadius();       
+        drawRadius();
+
+        if (isEnemyInRange)
+        {
+            shootBullet();
+        }
 
         upRelativeToParent = transform.parent.up;
 
@@ -138,6 +150,26 @@ public class Turret : MonoBehaviour
                 }
             }
 
+        }
+
+        void shootBullet()
+        {
+            for (int i = bullets.Count - 1; i >= 0; i--)
+            {
+                if (bullets[i] == null)
+                {
+                    bullets.RemoveAt(i);
+                }
+            }
+
+            spawnTime += Time.deltaTime;
+
+            if (spawnTime >= spawnInterval)
+            {
+                GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
+                bullets.Add(bullet);
+                spawnTime = 0f;
+            }
         }
 
     }

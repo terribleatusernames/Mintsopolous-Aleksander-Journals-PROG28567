@@ -104,11 +104,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2c74494ec63ec4da718c59b60543f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Turret
+  spawnInterval: 1
+  bulletPrefab: {fileID: 3190491936021663407, guid: 9c5ed5d0053183942bd055a9aa65ebd0, type: 3}
+  bullets: []
   angularSpeed: 20
   enemyShips: {fileID: 0}
   circlePoints: 28
   detectionRange: 5
-  shortestDistance: 0
   upRelativeToParent: {x: 0, y: 0, z: 0}
   target: {x: 0, y: 0, z: 0}
 --- !u!1 &8192332660247406368
