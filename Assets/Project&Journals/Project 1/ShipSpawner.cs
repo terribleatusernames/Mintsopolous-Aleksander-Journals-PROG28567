@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ShipSpawner : MonoBehaviour
 {
-    public List<GameObject> ships = new List<GameObject>();
 
     public GameObject shipPrefab;
     public Transform playerShipTansform;
@@ -38,7 +37,10 @@ public class ShipSpawner : MonoBehaviour
         {
  
             float angle = Random.Range(0f, Mathf.PI * 2f);
-            Vector3 spawnPos = new Vector3(Mathf.Cos(angle) * spawnRadius, Mathf.Sin(angle) * spawnRadius, 0f);
+            Vector3 spawnPos = new Vector3(
+                Mathf.Cos(angle) * spawnRadius + playerShipTansform.position.x,
+                Mathf.Sin(angle) * spawnRadius + playerShipTansform.position.y,
+                0f);
             GameObject spawnedShip = Instantiate(shipPrefab, spawnPos, Quaternion.identity);
             spawnedShip.GetComponent<Enemy>().playerTransform = playerShipTansform;
             spawnedEnemies.Add(spawnedShip);

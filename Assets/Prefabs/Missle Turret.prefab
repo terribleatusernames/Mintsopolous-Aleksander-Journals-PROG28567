@@ -111,7 +111,7 @@ MonoBehaviour:
   detectionRange: 10
   shortestDistance: 0
   missiles: []
-  furthestEnemy: {x: 0, y: 0, z: 0}
+  furthestEnemy: {fileID: 0}
   target: {x: 0, y: 0, z: 0}
   missilePrefab: {fileID: 1761202055222398, guid: 561200a1f15bfaa449ccc4cb56a3a980, type: 3}
 --- !u!1 &5709520074953588107

@@ -110,7 +110,7 @@ MonoBehaviour:
   angularSpeed: 20
   enemyShips: {fileID: 0}
   circlePoints: 28
-  detectionRange: 5
+  detectionRange: 6
   upRelativeToParent: {x: 0, y: 0, z: 0}
   target: {x: 0, y: 0, z: 0}
 --- !u!1 &8192332660247406368
