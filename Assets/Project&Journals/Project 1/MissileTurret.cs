@@ -37,14 +37,14 @@ public class MissileTurret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //spawnTime in update so the turret recharges while not in range
         spawnTime += Time.deltaTime;
 
         FindClosestTarget();
 
         drawRadius();
 
-        if (isEnemyInRange ) { shootMissile(); }
-
+        //draws a line from the turret to the target 
         Debug.DrawLine(transform.position, target, Color.orange);
 
         Vector3 directionToTarget = (target - transform.position).normalized;
@@ -55,14 +55,19 @@ public class MissileTurret : MonoBehaviour
 
         transform.Rotate(0f, 0f, deltaAngle);
 
+        if (isEnemyInRange) { shootMissile(); }
+
         void FindClosestTarget()
         {
+            //reset shortestDistance to 0 so that the turret can find the furthest enemy in range
             shortestDistance = 0f;
 
+            //reset target to default position so that there's no null error
             Vector3 defaultFace = transform.position;
 
             target = defaultFace;
 
+            //itterate through all ships and find which one is the closest to the turret and in range
             for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
             {
                 if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
@@ -76,7 +81,7 @@ public class MissileTurret : MonoBehaviour
 
                     if (distance > shortestDistance)
                     {
-
+                        //set the target to the furthest enemy in range
                         target = enemyPosition;
 
                         furthestEnemy = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform;
@@ -93,6 +98,8 @@ public class MissileTurret : MonoBehaviour
 
     void drawRadius()
     {
+
+        //draws a circle around the turret to show its detection range
         for (int j = 0; j <= circlePoints - 1; j++)
         {
             float degreeFirst = Mathf.PI * 2 / circlePoints * j;
@@ -109,6 +116,7 @@ public class MissileTurret : MonoBehaviour
 
         isEnemyInRange = false;
 
+        //itterate through all ships and see if any are in range
         for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
         {
             if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
@@ -125,7 +133,7 @@ public class MissileTurret : MonoBehaviour
     }
     public void shootMissile()
     {
-
+        //remove any null missiles from the list
         for (int i = missiles.Count - 1; i >= 0; i--)
         {
             if (missiles[i] == null)
@@ -136,12 +144,16 @@ public class MissileTurret : MonoBehaviour
 
         if (spawnTime >= spawnInterval)
         {
+            //spawn a missile and add it to the list of missiles
             GameObject missile = Instantiate(missilePrefab, transform.position, transform.rotation);
             missiles.Add(missile);
 
+            //set the missile's target to the furthest enemy in range
             missile.GetComponent<Missile>().target = furthestEnemy;
+            //give the misile the list of enemy ships so it can detect collisions
             missile.GetComponent<Missile>().enemyShips = enemyShips;
 
+            //reset the spawn time 
             spawnTime = 0f;
         }
 

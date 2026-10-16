@@ -13,7 +13,8 @@ public class CameraNoRotate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       vectorPlayerPos = player.position;
+        //camera follows player position, but does not rotate with the player
+        vectorPlayerPos = player.position;
         vectorPlayerPos.z = -10;
 
         transform.position = vectorPlayerPos;

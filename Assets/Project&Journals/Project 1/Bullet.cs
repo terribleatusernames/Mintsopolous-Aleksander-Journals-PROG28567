@@ -24,10 +24,13 @@ public class Bullet : MonoBehaviour
     {
         bulletDetector();   
         drawRadius();
+
+        //bullet speed/trajectory
         transform.position += transform.up * Time.deltaTime * bulletSpeed;
 
         bulletTimer += Time.deltaTime;
 
+        //delete bullet if it has been alive for too long
         if (bulletTimer >= bulletLifespan)
         {
             Destroy(gameObject);
@@ -36,7 +39,7 @@ public class Bullet : MonoBehaviour
 
     void drawRadius()
     {
-
+        //draws a circle around the bullet to show its hitbox radius
         for (int j = 0; j <= circlePoints - 1; j++)
         {
             float degreeFirst = Mathf.PI * 2 / circlePoints * j;
@@ -55,18 +58,20 @@ public class Bullet : MonoBehaviour
 
     void bulletDetector()
     {
-        
-            for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
+        //detects if the bullet has hit an enemy ship
+        for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
             {
-                if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
-                Vector3 enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform.position;
+                if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }//skip if the enemy ship has been destroyed
+            Vector3 enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform.position;
 
                 float distance = Vector3.Magnitude(enemyPosition - transform.position);
 
-                if (distance < bulletHitboxRadius + enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].GetComponent<Enemy>().hitboxRadius)
+            //check if the distance between the bullet and the enemy ship is less than the sum of their hitbox radii
+            if (distance < bulletHitboxRadius + enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].GetComponent<Enemy>().hitboxRadius)
                 {
                     Destroy(gameObject);
-                    enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].GetComponent<Enemy>().currentHealth -= 1;
+                //remove 1 health from the enemy ship hit
+                enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].GetComponent<Enemy>().currentHealth -= 1;
                 }
 
             }

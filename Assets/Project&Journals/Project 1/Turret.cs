@@ -35,19 +35,16 @@ public class Turret : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //spawnTime in update so the turret recharges while not in range
         spawnTime += Time.deltaTime;
 
         FindClosestTarget();
 
         drawRadius();
 
-        if (isEnemyInRange)
-        {
-            shootBullet();
-        }
-
         upRelativeToParent = transform.parent.up;
 
+        //draws a line in the direction the turret is facing
         Debug.DrawLine(transform.position, transform.position + transform.up, Color.orange);
 
         //aiming
@@ -73,25 +70,26 @@ public class Turret : MonoBehaviour
 
         //end aiming
 
+        if (isEnemyInRange) { shootBullet(); }
 
-
+        //draws a line from the turret to the target
         Debug.DrawLine(transform.position, target, Color.red);
-
-        Debug.DrawLine(transform.parent.position + transform.parent.right, transform.parent.position + -transform.parent.right, Color.blue);
 
 
 
         void FindClosestTarget()
         {
+            //reset shortestDistance to 9999 so that the turret can find the closest enemy in range
             shortestDistance = 9999f;
-          
+
+            //reset target to default position so that there's no null erro
             Vector3 defaultFace = transform.parent.position + transform.parent.up;
 
             target = defaultFace;
-            
-           
 
-                for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
+
+            //itterate through all ships and find which one is the closest to the turret and in range
+            for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
                 {
                 if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
                     Vector3 enemyPosition = enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i].transform.position;
@@ -106,6 +104,7 @@ public class Turret : MonoBehaviour
                         if (distance < shortestDistance && Vector3.Dot(directionToEnemy, transform.parent.up) > 0)
                         {
 
+                        //set the target to the closest enemy in range
                             target = enemyPosition;
 
                             shortestDistance = distance;
@@ -120,6 +119,7 @@ public class Turret : MonoBehaviour
 
         void drawRadius()
         {
+            //draws a circle around the turret to show its detection range
             for (int j = 0; j <= circlePoints-1; j++)
             {
                 float degreeFirst = Mathf.PI / circlePoints * j;
@@ -141,6 +141,7 @@ public class Turret : MonoBehaviour
 
             isEnemyInRange = false;
 
+            //itterate through all ships and see if any are in range
             for (int i = 0; i < enemyShips.GetComponent<ShipSpawner>().spawnedEnemies.Count; i++)
             {
                 if (enemyShips.GetComponent<ShipSpawner>().spawnedEnemies[i] == null) { continue; }
@@ -158,6 +159,7 @@ public class Turret : MonoBehaviour
 
         void shootBullet()
         {
+            //remove any null bullets from the list
             for (int i = bullets.Count - 1; i >= 0; i--)
             {
                 if (bullets[i] == null)
@@ -170,11 +172,14 @@ public class Turret : MonoBehaviour
 
             if (spawnTime >= spawnInterval)
             {
+                //spawn a bullets and add it to the list of bullets
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, transform.rotation);
                 bullets.Add(bullet);
 
+                //give the bullet the list of enemy ships so it can detect collisions
                 bullet.GetComponent<Bullet>().enemyShips = enemyShips;
 
+                //reset the spawn time 
                 spawnTime = 0f;
             }
         }
