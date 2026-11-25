@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour
         MovementUpdate(playerInput);
     }
 
+
     private void MovementUpdate(Vector2 playerInput)
     {
         rb.AddForce(playerInput * moveSpeed, ForceMode2D.Force);
