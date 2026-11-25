@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
     Collider2D player;
     ContactFilter2D filter = new ContactFilter2D(); 
 
+    private float apexHeight = 12f;
+    private float apexTIme = 4f;
+
 
     public enum FacingDirection
     {
@@ -22,6 +25,8 @@ public class PlayerController : MonoBehaviour
         filter.SetLayerMask(LayerMask.GetMask("Ground"));
         
         rb = GetComponent<Rigidbody2D>();
+
+        
     }
 
     void Update()
@@ -37,6 +42,21 @@ public class PlayerController : MonoBehaviour
         {
             playerInput.x = 1;
         }
+
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame && IsGrounded())
+        {
+            rb.AddForce(new Vector2(0, (2 * apexHeight / apexTIme)), ForceMode2D.Impulse);
+        }
+
+        if (IsGrounded())
+        {
+            rb.gravityScale = 1;
+        }
+        else
+        {
+            rb.gravityScale = 2 * apexHeight / Mathf.Pow(apexTIme, 2);
+        }
+
 
         MovementUpdate(playerInput);
     }
