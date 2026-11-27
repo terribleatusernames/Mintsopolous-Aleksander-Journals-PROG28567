@@ -1,17 +1,33 @@
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody2D rb;
-
+    public float groundCheckTimer;
+    public float coyoteTimeCounter;
     public float moveSpeed = 10f;
     Collider2D player;
-    ContactFilter2D filter = new ContactFilter2D(); 
+    ContactFilter2D filter = new ContactFilter2D();
 
-    private float apexHeight = 12f;
-    private float apexTIme = 4f;
+    private float gravity;
+    private float jumpVelocity;
+    private float terminalVelocity = 0;
+    public float apexHeight = 3f;
+    public float apexTime = 0.5f;
 
+    private float acceleration;
+    private float deceleration;
+
+    public float maxSpeed = 5f;
+    public float accelerationTime = 0.25f;
+    public float decelerationTime = 0.15f;
+    bool isJumping = false;
+    private Vector2 velocity;
+
+    public float coyoteTime = 5f;
+    public bool isGrounded = false;
 
     public enum FacingDirection
     {
@@ -20,21 +36,45 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+
         player = GetComponent<Collider2D>();
 
-        filter.SetLayerMask(LayerMask.GetMask("Ground"));
-        
         rb = GetComponent<Rigidbody2D>();
 
-        
+        filter.SetLayerMask(LayerMask.GetMask("Ground"));
+
+        filter.useNormalAngle = true;
+        filter.minNormalAngle = 45;
+        filter.maxNormalAngle = 135;
+
+        rb.gravityScale = 0;
+
+        acceleration = maxSpeed / accelerationTime;
+        deceleration = maxSpeed / decelerationTime;
+
+        gravity = -2 * apexHeight / Mathf.Pow(apexTime, 2);
+        jumpVelocity = 2 * apexHeight / apexTime;
+        terminalVelocity = gravity;
     }
 
     void Update()
     {
-        
+
+        if (IsGrounded())
+        {
+            if (groundCheckTimer > 0.1f)
+            {
+                coyoteTimeCounter = coyoteTime;
+            }
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
         Vector2 playerInput = new Vector2();
 
-        if(Keyboard.current.leftArrowKey.isPressed)
+        if (Keyboard.current.leftArrowKey.isPressed)
         {
             playerInput.x = -1;
         }
@@ -43,29 +83,61 @@ public class PlayerController : MonoBehaviour
             playerInput.x = 1;
         }
 
-        if (Keyboard.current.upArrowKey.wasPressedThisFrame && IsGrounded())
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame && coyoteTimeCounter > 0)
         {
-            rb.AddForce(new Vector2(0, (2 * apexHeight / apexTIme)), ForceMode2D.Impulse);
+            isJumping = true;
+           
         }
-
-        if (IsGrounded())
-        {
-            rb.gravityScale = 1;
-        }
-        else
-        {
-            rb.gravityScale = 2 * apexHeight / Mathf.Pow(apexTIme, 2);
-        }
-
 
         MovementUpdate(playerInput);
     }
-
-
     private void MovementUpdate(Vector2 playerInput)
     {
-        rb.AddForce(playerInput * moveSpeed, ForceMode2D.Force);
+        if (playerInput.x != 0)
+        {
+            velocity.x += acceleration * playerInput.x * Time.deltaTime;
+            velocity.x = Mathf.Clamp(velocity.x, -maxSpeed, maxSpeed);
+        }
+        else
+        {
+            velocity.x = Mathf.MoveTowards(velocity.x, 0, deceleration * Time.deltaTime);
+        }
     }
+    private void FixedUpdate()
+    {
+        if (!IsGrounded())
+        {
+            velocity.y += gravity * Time.fixedDeltaTime;
+            velocity.y = Mathf.Clamp(velocity.y, terminalVelocity, velocity.y);
+        } else
+        {
+            if (groundCheckTimer > 0.1f)
+            {
+                velocity.y = 0;
+            }
+        }
+
+        if (isJumping)
+        {
+            velocity.y = jumpVelocity;
+            coyoteTimeCounter = 0f;
+            isJumping = false;
+        }
+        print(velocity);
+
+        rb.linearVelocity = velocity;
+
+        if (IsGrounded())
+        {
+            groundCheckTimer = 0;
+        }
+        else
+        {
+            groundCheckTimer += Time.fixedDeltaTime;
+        }
+    }
+
+
 
     public bool IsWalking()
     {
@@ -77,7 +149,7 @@ public class PlayerController : MonoBehaviour
     }
 
     public FacingDirection GetFacingDirection()
-    { 
+    {
         return (rb.linearVelocity.x > 0.1f) ? FacingDirection.right : (rb.linearVelocity.x < -0.1f) ? FacingDirection.left : FacingDirection.left;
     }
 }

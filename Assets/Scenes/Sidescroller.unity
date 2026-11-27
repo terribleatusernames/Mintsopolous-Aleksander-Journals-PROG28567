@@ -1627,8 +1627,8 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_AngularDamping: 0
+  m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1638,7 +1638,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!1 &1419490946
 GameObject:
@@ -4295,11 +4295,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 82246069086624815, guid: c0063abd85bf41b4faef95c439286949, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.53
+      value: -0.26
       objectReference: {fileID: 0}
     - target: {fileID: 82246069086624815, guid: c0063abd85bf41b4faef95c439286949, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.75
+      value: 0.36
       objectReference: {fileID: 0}
     - target: {fileID: 82246069086624815, guid: c0063abd85bf41b4faef95c439286949, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4334,8 +4334,20 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7428298229329625348, guid: c0063abd85bf41b4faef95c439286949, type: 3}
+      propertyPath: body2D
+      value: 
+      objectReference: {fileID: 1205944382}
+    - target: {fileID: 7428298229329625348, guid: c0063abd85bf41b4faef95c439286949, type: 3}
+      propertyPath: apexTime
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7428298229329625348, guid: c0063abd85bf41b4faef95c439286949, type: 3}
       propertyPath: moveSpeed
-      value: 1
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7428298229329625348, guid: c0063abd85bf41b4faef95c439286949, type: 3}
+      propertyPath: apexHeight
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8927549095852432977, guid: c0063abd85bf41b4faef95c439286949, type: 3}
       propertyPath: m_Name
